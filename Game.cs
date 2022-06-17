@@ -6,62 +6,56 @@ namespace TicTacToe
 {
     class Game
     {
-        public void playGame()
+        PcPlayer pcPlayer = new PcPlayer('X');
+        HumanPlayer humanPlayer = new HumanPlayer('O');
+        public void PlayGame()
         {
-            PcPlayer pcPlayer = new PcPlayer();
             char[] board = new char[9] { '0', '1', '2', '3', '4', '5', '6', '7', '8' };
             int position;
-            char player = selectWhoBegins();
+            var player = SelectWhoBegins();
             do
             {
                 Console.Clear();
-                printBoard(board); 
-                position = makeMove(player, board, pcPlayer);
-                markBoard(position,player, board);
-                player = changePlayer(player);
+                PrintBoard(board);
+                position = player.MakeMove(board);
+                MarkBoard(position,player.GetPlayerChar(), board);
+                player = ChangePlayer(player);
             }
-            while (!winCondition(changePlayer(player), board) && !fullBoard(board));
+            while (!WinCondition(ChangePlayer(player).GetPlayerChar(), board) && !FullBoard(board));
             Console.Clear();
-            printBoard(board);
-            if (winCondition(changePlayer(player), board))
-                Console.WriteLine("El ganador es : " + changePlayer(player));
+            PrintBoard(board);
+            if (WinCondition(ChangePlayer(player).GetPlayerChar(), board))
+                Console.WriteLine("El ganador es : " + ChangePlayer(player).GetPlayerChar());
             else
                 Console.WriteLine("Empate");
         }
-        public int makeMove(char player, char[]board, PcPlayer pcPlayer)
-        {
-            int position;
-            string input;
-            if (player == 'O')
-            {
-                input = Console.ReadLine();
-                position = int.Parse(input);
-            }
-            else
-            {
-                position = pcPlayer.makeMove(player, board);
-            }
-            return position;
-        }
-        public static char changePlayer(char player)
+    
+        public static char ChangeSymbol(char player)
         {
             if (player == 'O')
                 return 'X';
             else
                 return 'O';
         }
-        public char selectWhoBegins()
+        public IPlayer ChangePlayer(IPlayer player)
+        {
+            if (player is HumanPlayer)
+                return pcPlayer;
+            else
+                return humanPlayer;
+        }
+        public IPlayer SelectWhoBegins()
         {
             string input;
             Console.WriteLine("Elija quien empieza, 1 para comenzar, 2 para jugar de segundo, en caso de presionar otra tecla empezara segundo");
             input = Console.ReadLine();
             if (int.Parse(input)==1)
             {
-                return 'O';
+                return humanPlayer;
             }
             else
             {
-                return 'X';
+                return pcPlayer;
             }
         }
     }

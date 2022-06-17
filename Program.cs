@@ -7,7 +7,7 @@ namespace TicTacToe
         static void Main(string[] args)
         {
             Game game=new Game();
-            game.playGame();
+            game.PlayGame();
 
 
         }

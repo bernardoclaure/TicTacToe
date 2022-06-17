@@ -6,11 +6,11 @@ namespace TicTacToe
 {
     static class Board
     {
-        public static void markBoard(int position, char Symbol,char[] board)
+        public static void MarkBoard(int position, char character,char[] board)
         {
-            board[position] = Symbol;
+            board[position] = character;
         }
-        public static void printBoard(char[] board)
+        public static void PrintBoard(char[] board)
         {
             for(int i=0;i<9;i++)
             {
@@ -23,7 +23,7 @@ namespace TicTacToe
                 }
             }
         }
-        public static bool winCondition(char player, char[] board) 
+        public static bool WinCondition(char player, char[] board) 
         {
             if (
                  (board[0] == player && board[1] == player && board[2] == player) ||
@@ -43,7 +43,7 @@ namespace TicTacToe
                 return false;
             }
         }
-        public static bool fullBoard(char[] board)
+        public static bool FullBoard(char[] board)
         {
             foreach (char space in board)
             {
@@ -52,7 +52,7 @@ namespace TicTacToe
             }
             return true;
         }
-        public static char[] availableSpots(char[] board)
+        public static char[] AvailableSpots(char[] board)
         {
             List<char> spots=new List<char>();
             foreach (char space in board)

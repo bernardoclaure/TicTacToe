@@ -5,19 +5,28 @@ using System.Text;
 using static TicTacToe.Board;
 namespace TicTacToe
 {
-    class PcPlayer
+    class PcPlayer:IPlayer
     {
-        char pcCharacter;
-        public int makeMove(char player,char[] board) 
+        private char pcCharacter;
+        public PcPlayer(char player)
         {
             pcCharacter = player;
-            var emptySpots = availableSpots(board);
+        }
+
+        public char GetPlayerChar()
+        {
+            return pcCharacter;
+        }
+
+        public int MakeMove(char[] board) 
+        {
+            var emptySpots = AvailableSpots(board);
             var scores = new Dictionary<int, int>();
             var topScore = int.MinValue;
             foreach (var move in emptySpots)
             {
                 var moveInt = int.Parse(move.ToString());
-                var score = miniMax(player, moveInt, CloneBoard(board));
+                var score = MiniMax(pcCharacter, moveInt, CloneBoard(board));
                 scores[moveInt] = score;
                 if (score > topScore)
                 {
@@ -29,24 +38,24 @@ namespace TicTacToe
                 .ToArray();
                 return topMoves[0];
         }
-        private int miniMax(char player, int move, char[] board)
+        private int MiniMax(char player, int move, char[] board)
         {
-            markBoard(move, player, board);
-            var result =winCondition(player, board);
-            var ended = fullBoard(board);
+            MarkBoard(move, player, board);
+            var result =WinCondition(player, board);
+            var ended = FullBoard(board);
             if (result && player == pcCharacter)
                 return 100;
             else if (result && player != pcCharacter)
                 return -100;
             else if (ended)
                 return 0;
-            player = Game.changePlayer(player);
-            var emptySpots = availableSpots(board);
+            player = Game.ChangeSymbol(player);
+            var emptySpots = AvailableSpots(board);
             var scores = new int[emptySpots.Length];
             for (var i = 0; i < emptySpots.Length; i++)
             {
                 var availableMove = int.Parse(emptySpots[i].ToString());
-                var score = miniMax(player, availableMove, CloneBoard(board));
+                var score = MiniMax(player, availableMove, CloneBoard(board));
                 scores[i] = score;
             }
             var pcTurn = player == pcCharacter;
