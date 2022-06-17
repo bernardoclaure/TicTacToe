@@ -2,23 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using static TicTacToe.Board;
 namespace TicTacToe
 {
-    class pcPlayer
+    class PcPlayer
     {
-        Board board = new Board();
-        char realP = 'X';
-        Game game = new Game();
-        public int miniMax(char player,char[] boardU) 
+        char pcCharacter;
+        public int makeMove(char player,char[] board) 
         {
-            var emptySpots = board.availableSpots(board.CloneBoard(boardU));
+            pcCharacter = player;
+            var emptySpots = availableSpots(board);
             var scores = new Dictionary<int, int>();
             var topScore = int.MinValue;
             foreach (var move in emptySpots)
             {
                 var moveInt = int.Parse(move.ToString());
-                var score = GetMinMaxScoreForMovesRecursive(player, moveInt, board.CloneBoard(boardU));
+                var score = miniMax(player, moveInt, CloneBoard(board));
                 scores[moveInt] = score;
                 if (score > topScore)
                 {
@@ -30,30 +29,29 @@ namespace TicTacToe
                 .ToArray();
                 return topMoves[0];
         }
-        private int GetMinMaxScoreForMovesRecursive(char player, int move, char[] boardU)
+        private int miniMax(char player, int move, char[] board)
         {
-           
-            board.markBoard(move, player, boardU);
-            var result = board.winCondition(player, boardU);
-            var ended = board.fullBoard(boardU);
-            if (result && player == realP)
+            markBoard(move, player, board);
+            var result =winCondition(player, board);
+            var ended = fullBoard(board);
+            if (result && player == pcCharacter)
                 return 100;
-            else if (result && player != realP)
+            else if (result && player != pcCharacter)
                 return -100;
             else if (ended)
                 return 0;
-            player = game.changePlayer(player);
-
-            var nextAvailableMoves = board.availableSpots(boardU);
-            var scores = new int[nextAvailableMoves.Length];
-            for (var i = 0; i < nextAvailableMoves.Length; i++)
+            player = Game.changePlayer(player);
+            var emptySpots = availableSpots(board);
+            var scores = new int[emptySpots.Length];
+            for (var i = 0; i < emptySpots.Length; i++)
             {
-                var availableMove = int.Parse(nextAvailableMoves[i].ToString());
-                var score = GetMinMaxScoreForMovesRecursive(player, availableMove, board.CloneBoard(boardU));
+                var availableMove = int.Parse(emptySpots[i].ToString());
+                var score = miniMax(player, availableMove, CloneBoard(board));
                 scores[i] = score;
             }
-            var isMyTurn = player == realP;
-            return isMyTurn ? scores.Max() : scores.Min();
+            var pcTurn = player == pcCharacter;
+            return pcTurn ? scores.Max() : scores.Min();
         }
+  
     }
 }
