@@ -25,9 +25,9 @@ namespace TicTacToe
             Console.Clear();
             PrintBoard(board);
             if (WinCondition(ChangePlayer(player).GetPlayerChar(), board))
-                Console.WriteLine("El ganador es : " + ChangePlayer(player).GetPlayerChar());
+                Console.WriteLine("El ganador es el jugador: " + ChangePlayer(player).GetPlayerChar());
             else
-                Console.WriteLine("Empate");
+                Console.WriteLine("EMPATE");
         }
     
         public static char ChangeSymbol(char player)
