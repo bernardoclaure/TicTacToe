@@ -4,13 +4,13 @@ using System.Text;
 
 namespace TicTacToe
 {
-    class Board
+    static class Board
     {
-        public void markBoard(int position, char Symbol,char[] board)
+        public static void markBoard(int position, char Symbol,char[] board)
         {
             board[position] = Symbol;
         }
-        public void printBoard(char[] board)
+        public static void printBoard(char[] board)
         {
             for(int i=0;i<9;i++)
             {
@@ -23,7 +23,7 @@ namespace TicTacToe
                 }
             }
         }
-        public bool winCondition(char player, char[] board) 
+        public static bool winCondition(char player, char[] board) 
         {
             if (
                  (board[0] == player && board[1] == player && board[2] == player) ||
@@ -43,7 +43,7 @@ namespace TicTacToe
                 return false;
             }
         }
-        public bool fullBoard(char[] board)
+        public static bool fullBoard(char[] board)
         {
             foreach (char space in board)
             {
@@ -52,7 +52,7 @@ namespace TicTacToe
             }
             return true;
         }
-        public char[] availableSpots(char[] board)
+        public static char[] availableSpots(char[] board)
         {
             List<char> spots=new List<char>();
             foreach (char space in board)
@@ -63,7 +63,7 @@ namespace TicTacToe
             return spots.ToArray();
 
         }
-        public char[] CloneBoard(char[] board)
+        public static char[] CloneBoard(char[] board)
         {
             char[] copiedBoard = new char[9];
             Array.Copy(board, copiedBoard, 9);
